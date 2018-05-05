@@ -1,0 +1,53 @@
+{
+  "name": "sox-server",
+  "version": "0.0.1-alpha",
+  "description": "Server implementation for \"SOX\" project",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --p tsconfig.json",
+    "serve": "node ./dist/index.js",
+    "watch": "npm run build && npm run serve",
+    "run:watch": "nodemon -e ts,js --watch src --exec npm run watch"
+  },
+  "author": "Alex Szabo",
+  "license": "ISC",
+  "dependencies": {
+    "cfonts": "^2.1.0",
+    "express": "^4.16.3",
+    "http-status-codes": "^1.3.0",
+    "typescript": "^2.8.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.11.1",
+    "@types/jest": "^22.2.3",
+    "@types/node": "^10.0.4",
+    "concurrently": "^3.5.1",
+    "jest": "^22.4.3",
+    "nodemon": "^1.17.3",
+    "ts-jest": "^22.4.5",
+    "tsc": "^1.20150623.0",
+    "tslint": "^5.10.0",
+    "typescript-eslint-parser": "^15.0.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "globals": {
+      "ts-jest": {
+        "useBabelrc": true
+      }
+    }
+  }
+}
