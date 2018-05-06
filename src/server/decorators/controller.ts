@@ -4,6 +4,7 @@ import {
   ResourceController,
   ResourceControllerClass,
 } from '../models/resouce-controller.model';
+import { REGISTERED_ROUTES } from '../shared';
 
 export function Controller<T extends ResourceControllerClass>(root: string) {
   return (target: T) => {
@@ -12,6 +13,8 @@ export function Controller<T extends ResourceControllerClass>(root: string) {
       constructor(...args: any[]) {
         super(...args);
         const instance = Object.assign(this, new ResourceController());
+        const className = instance.constructor.name;
+        registerRoot(className, root);
 
         server.route(root)
             .delete((req: Request, res: Response) => instance.delete(req, res))
@@ -24,3 +27,13 @@ export function Controller<T extends ResourceControllerClass>(root: string) {
   };
 }
 
+function registerRoot(className: string, root: string) {
+  if (REGISTERED_ROUTES.has(root)) {
+    throw new Error(`
+    The endpoint '${root}' is already registered. 
+    Got this error when trying to set up routing for ${className}
+    `);
+  }
+
+  REGISTERED_ROUTES.add(root);
+}

@@ -1,4 +1,4 @@
-import { Controller} from '../decorators/controller';
+import { Controller } from '../decorators/controller';
 import { HTTP_STATUS, Request, Response } from '../http';
 import { ResourceController } from '../models/resouce-controller.model';
 
@@ -6,7 +6,7 @@ import { ResourceController } from '../models/resouce-controller.model';
 export class GreetingController implements Partial<ResourceController> {
   constructor() {}
 
-  get(req: Request, res: Response): Response {
-    return res.sendStatus(HTTP_STATUS.MOVED_PERMANENTLY);
+  get(request: Request, response: Response): Response {
+    return response.sendStatus(HTTP_STATUS.OK);
   }
 }

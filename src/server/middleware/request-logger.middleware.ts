@@ -1,14 +1,13 @@
-import { Next, Request, Response } from './http';
+import { Request, Response } from '../http';
+import { getIPAddress } from '../http/utils';
 
 export function logRequest(
     request: Request,
-    response: Response,
-    next: Next,
+    _response: Response,
 ): void {
   const currentTime = new Date();
-  const ip = request.headers['x-forwarded-for'] ||
-      request.connection.remoteAddress;
   const now = currentTime.toISOString();
+  const ip = getIPAddress(request);
   const method = request.method;
   const path = request.url;
   const headers = request.headers;
@@ -17,10 +16,4 @@ export function logRequest(
       'Unauthenticated';
 
   console.log(`[${now}] ${method} ${path} -- ${ip} ${auth}`);
-
-  next();
 }
-
-export const MIDDLEWARES = [
-  logRequest,
-];

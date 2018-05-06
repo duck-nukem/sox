@@ -4,7 +4,8 @@ import * as express from 'express';
 import * as os from 'os';
 import { GREETING_CONFIG, ServerConfiguration } from './config';
 import { Initialize } from './decorators/initializable';
-import { MIDDLEWARES } from './middlewares';
+import { Next, Request, Response } from './http';
+import { MIDDLEWARES } from './middleware/index';
 import { Initializable } from './models/initializable.model';
 
 @Initialize
@@ -25,7 +26,7 @@ export class Server implements Initializable {
   }
 
   init(): void {
-    this.setupMiddlewares();
+    this.setupMiddleware();
     this.setupRouting();
   }
 
@@ -33,8 +34,13 @@ export class Server implements Initializable {
     this.instance.use('/', Server.router);
   }
 
-  private setupMiddlewares() {
-    MIDDLEWARES.map(middleware => Server.router.use(middleware));
+  private setupMiddleware() {
+    MIDDLEWARES.map(middleware => Server.router.use(
+        (request: Request, response: Response, next: Next) => {
+          middleware(request, response);
+          next();
+        }),
+    );
   }
 }
 
