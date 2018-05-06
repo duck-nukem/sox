@@ -6,7 +6,7 @@ export function logRequest(
     _response: Response,
 ): void {
   const currentTime = new Date();
-  const now = currentTime.toISOString();
+  const dateTime = currentTime.toISOString();
   const ip = getIPAddress(request);
   const method = request.method;
   const path = request.url;
@@ -15,5 +15,5 @@ export function logRequest(
       `${headers.authorization.split(' ')[0]} Authorization` :
       'Unauthenticated';
 
-  console.log(`[${now}] ${method} ${path} -- ${ip} ${auth}`);
+  console.log(`[${dateTime}] ${method} ${path} -- ${ip} ${auth}`);
 }

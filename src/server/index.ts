@@ -34,7 +34,7 @@ export class Server implements Initializable {
     this.instance.use('/', Server.router);
   }
 
-  private setupMiddleware() {
+  private setupMiddleware(): void {
     MIDDLEWARES.map(middleware => Server.router.use(
         (request: Request, response: Response, next: Next) => {
           middleware(request, response);

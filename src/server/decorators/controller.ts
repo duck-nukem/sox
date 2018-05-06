@@ -27,7 +27,7 @@ export function Controller<T extends ResourceControllerClass>(root: string) {
   };
 }
 
-function registerRoot(className: string, root: string) {
+function registerRoot(className: string, root: string): void {
   if (REGISTERED_ROUTES.has(root)) {
     throw new Error(`
     The endpoint '${root}' is already registered. 
