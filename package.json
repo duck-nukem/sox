@@ -13,6 +13,7 @@
   "author": "Alex Szabo",
   "license": "ISC",
   "dependencies": {
+    "atob": "^2.1.1",
     "cfonts": "^2.1.0",
     "express": "^4.16.3",
     "http-status-codes": "^1.3.0",

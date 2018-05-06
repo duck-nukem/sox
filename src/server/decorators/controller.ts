@@ -1,5 +1,6 @@
+import { ConfigurationException } from '../exceptions/configuration.exception';
 import { Request, Response } from '../http';
-import { server } from '../index';
+import { Server, serverInstance } from '../index';
 import {
   ResourceController,
   ResourceControllerClass,
@@ -9,14 +10,13 @@ import { REGISTERED_ROUTES } from '../shared';
 export function Controller<T extends ResourceControllerClass>(root: string) {
   return (target: T) => {
     return class extends target {
-      //noinspection TsLint
       constructor(...args: any[]) {
         super(...args);
         const instance = Object.assign(this, new ResourceController());
         const className = instance.constructor.name;
         registerRoot(className, root);
 
-        server.route(root)
+        serverInstance.route(root)
             .delete((req: Request, res: Response) => instance.delete(req, res))
             .get((req: Request, res: Response) => instance.get(req, res))
             .patch((req: Request, res: Response) => instance.patch(req, res))
@@ -29,11 +29,12 @@ export function Controller<T extends ResourceControllerClass>(root: string) {
 
 function registerRoot(className: string, root: string): void {
   if (REGISTERED_ROUTES.has(root)) {
-    throw new Error(`
+    throw new ConfigurationException(`
     The endpoint '${root}' is already registered. 
     Got this error when trying to set up routing for ${className}
     `);
   }
 
   REGISTERED_ROUTES.add(root);
+  Server.controllerRoots.set(className, root);
 }

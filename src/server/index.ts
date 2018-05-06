@@ -5,12 +5,13 @@ import * as os from 'os';
 import { GREETING_CONFIG, ServerConfiguration } from './config';
 import { Initialize } from './decorators/initializable';
 import { Next, Request, Response } from './http';
-import { MIDDLEWARES } from './middleware/index';
+import { Middleware, MIDDLEWARES } from './middleware';
 import { Initializable } from './models/initializable.model';
 
 @Initialize
 export class Server implements Initializable {
   static router = express.Router();
+  static controllerRoots = new Map<string, string>();
   instance = express();
 
   constructor() {}
@@ -35,7 +36,7 @@ export class Server implements Initializable {
   }
 
   private setupMiddleware(): void {
-    MIDDLEWARES.map(middleware => Server.router.use(
+    MIDDLEWARES.map((middleware: Middleware) => Server.router.use(
         (request: Request, response: Response, next: Next) => {
           middleware(request, response);
           next();
@@ -44,4 +45,4 @@ export class Server implements Initializable {
   }
 }
 
-export const server = new Server().instance;
+export const serverInstance = new Server().instance;
